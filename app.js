@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 //cors
 let cors = require("cors");
 
-//app.use(cors);
+app.use(cors());
 
 //allowing cors
 app.use(function (req, res, next) {
@@ -25,8 +25,23 @@ let bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//routing
+//db
 
+const { DBURL } = process.env;
+mongoose.Promise = global.Promise;
+
+mongoose
+  .connect(DBURL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log("Db Connected");
+  })
+  .catch((err) => console.log("Could not connect to db", err));
+//routing
 app.get("/", (req, res) => {
   res.status(200).send({
     success: true,
@@ -35,11 +50,11 @@ app.get("/", (req, res) => {
 });
 
 //import routes
-const readerRoute = require("./routes/reader")
+const readerRoute = require("./routes/reader");
 
 //using routes
 
-app.use("/api/reader", readerRoute)
+app.use("/api/reader", readerRoute);
 
 //server
 let PORT = process.env.PORT || 3000;
