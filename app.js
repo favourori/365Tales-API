@@ -19,7 +19,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-
 //Body Middlewares here
 let bodyParser = require("body-parser");
 // parse application/x-www-form-urlencoded
@@ -34,6 +33,13 @@ app.get("/", (req, res) => {
     message: "Tales Cafe API v.1.0.0",
   });
 });
+
+//import routes
+const readerRoute = require("./routes/reader")
+
+//using routes
+
+app.use("/api/reader", readerRoute)
 
 //server
 let PORT = process.env.PORT || 3000;
