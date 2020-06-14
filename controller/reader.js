@@ -11,6 +11,7 @@ exports.getAllReaders = async (req, res) => {
       res.status(200).send({
         success: true,
         readers: allReaders,
+        numberOfUsers: allReaders.length
       });
     }
   } catch (err) {
@@ -22,11 +23,17 @@ exports.getAllReaders = async (req, res) => {
 exports.createReader = async (req, res) => {
   try {
     let reader = await Reader.findOne({ email: req.body.email });
+    let readerUsername = Reader.findOne({ username: req.body.username });
+
+    //make second req to check for username
 
     if (reader) {
       res
         .status(400)
-        .send({ success: false, message: "A user with this email exists" });
+        .send({
+          success: false,
+          message: "A user with this credential exits",
+        });
     } else {
       //Hash password
       let salt = await bcrypt.genSalt(10);
@@ -41,10 +48,7 @@ exports.createReader = async (req, res) => {
       newReader
         .save()
         .then((data) => {
-          const token = jwt.sign(
-            { reader: newReader },
-            process.env.JWT_SECRET
-          );
+          const token = jwt.sign({ reader: newReader }, process.env.JWT_SECRET);
           res.header("auth-token", token).status(200).send({
             success: true,
             data: data,
@@ -62,7 +66,6 @@ exports.createReader = async (req, res) => {
 
 //Login
 exports.readerLogin = async (req, res) => {
-
   try {
     let reader = await Reader.findOne({ email: req.body.email });
     if (!reader)
@@ -92,5 +95,4 @@ exports.readerLogin = async (req, res) => {
   } catch (err) {
     res.status(400).send(err.message);
   }
-
 };
