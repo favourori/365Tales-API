@@ -51,10 +51,12 @@ app.get("/", (req, res) => {
 
 //import routes
 const readerRoute = require("./routes/reader");
+const storyRoute = require("./routes/story");
 
 //using routes
 
 app.use("/api/reader", readerRoute);
+app.use("/api/story", storyRoute)
 
 //server
 let PORT = process.env.PORT || 3000;
