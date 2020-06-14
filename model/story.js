@@ -10,8 +10,8 @@ let storySchema = mongoose.Schema({
     required: [true, "course description is required"],
   },
   photoLink: String,
-  audioLink: String,
-  //chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "episode" }],
+ 
+  //chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "chapter" }],
   dateCreated: { type: Date, default: Date.now },
   isInProgress: { type: Boolean, default: false },
   rating: { type: Number },
