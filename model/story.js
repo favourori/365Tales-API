@@ -10,11 +10,10 @@ let storySchema = mongoose.Schema({
     required: [true, "course description is required"],
   },
   photoLink: String,
- 
-  //chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "chapter" }],
+  chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "chapter" }],
   dateCreated: { type: Date, default: Date.now },
   isInProgress: { type: Boolean, default: false },
-  rating: { type: Number },
+  rating: { type: Number }, //over 5?
 });
 
 let Story = mongoose.model("story", storySchema);
