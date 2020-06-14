@@ -13,7 +13,7 @@ let storySchema = mongoose.Schema({
   chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "chapter" }],
   dateCreated: { type: Date, default: Date.now },
   isInProgress: { type: Boolean, default: false },
-  rating: { type: Number }, //over 5?
+  rating: { type: Number }, //over 5
 });
 
 let Story = mongoose.model("story", storySchema);
