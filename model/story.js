@@ -4,6 +4,7 @@ let mongoose = require("mongoose");
 let storySchema = mongoose.Schema({
   title: { type: String, required: [true, "course title is required"] },
   creator: { type: String, required: [true, "course title is required"] },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: "category" },
   description: {
     type: String,
     required: [true, "course description is required"],
@@ -15,6 +16,6 @@ let storySchema = mongoose.Schema({
   rating: { type: Number },
 });
 
-let Course = mongoose.model("course", CourseSchema);
+let Story = mongoose.model("story", CourseSchema);
 
-module.exports = Course;
+module.exports = Story;
