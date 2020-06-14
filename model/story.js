@@ -16,6 +16,6 @@ let storySchema = mongoose.Schema({
   rating: { type: Number },
 });
 
-let Story = mongoose.model("story", CourseSchema);
+let Story = mongoose.model("story", storySchema);
 
 module.exports = Story;
