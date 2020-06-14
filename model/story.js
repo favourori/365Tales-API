@@ -1,10 +1,20 @@
-//Setup Model
-const mongoose = require("mongoose");
+let mongoose = require("mongoose");
 
-//crreate reader schema
+//create course schema
 let storySchema = mongoose.Schema({
-  username: { type: String, required: [true, "please enter your username"] },
-
-  created: { type: Date, default: Date.now },
+  title: { type: String, required: [true, "course title is required"] },
+  creator: { type: String, required: [true, "course title is required"] },
+  description: {
+    type: String,
+    required: [true, "course description is required"],
+  },
+  photo: String,
+  //chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "episode" }],
+  dateCreated: { type: Date, default: Date.now },
+  isInProgress: { type: Boolean, default: false },
+  rating: { type: Number },
 });
 
+let Course = mongoose.model("course", CourseSchema);
+
+module.exports = Course;
