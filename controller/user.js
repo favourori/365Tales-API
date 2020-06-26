@@ -1,17 +1,17 @@
 const jwt = require("jsonwebtoken");
-const Reader = require("../model/reader");
+const User = require("../model/user");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
-exports.getAllReaders = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
   try {
-    let allReaders = await Reader.find();
+    let allUsers = await User.find();
 
-    if (allReaders) {
+    if (allUsers) {
       res.status(200).send({
         success: true,
-        readers: allReaders,
-        numberOfUsers: allReaders.length
+        readers: allUsers,
+        numberOfUsers: allUsers.length
       });
     }
   } catch (err) {
@@ -20,14 +20,14 @@ exports.getAllReaders = async (req, res) => {
 };
 
 //Create Reader
-exports.createReader = async (req, res) => {
+exports.createUser = async (req, res) => {
   try {
-    let reader = await Reader.findOne({ email: req.body.email });
-    let readerUsername = Reader.findOne({ username: req.body.username });
+    let user = await User.findOne({ email: req.body.email });
+    let userUsername = User.findOne({ username: req.body.username });
 
     //make second req to check for username
 
-    if (reader) {
+    if (user) {
       res
         .status(400)
         .send({
@@ -39,16 +39,16 @@ exports.createReader = async (req, res) => {
       let salt = await bcrypt.genSalt(10);
       let hashedPassword = await bcrypt.hash(req.body.password, salt);
       //console.log("not found");
-      let newReader = await new Reader({
+      let newUser = await new User({
         username: req.body.username,
         email: req.body.email,
         password: hashedPassword,
       });
 
-      newReader
+      newUser
         .save()
         .then((data) => {
-          const token = jwt.sign({ reader: newReader }, process.env.JWT_SECRET);
+          const token = jwt.sign({ user: newUser }, process.env.JWT_SECRET);
           res.header("auth-token", token).status(200).send({
             success: true,
             data: data,
@@ -65,10 +65,10 @@ exports.createReader = async (req, res) => {
 };
 
 //Login
-exports.readerLogin = async (req, res) => {
+exports.userLogin = async (req, res) => {
   try {
-    let reader = await Reader.findOne({ email: req.body.email });
-    if (!reader)
+    let user = await User.findOne({ email: req.body.email });
+    if (!user)
       return res
         .status(400)
         .send({ success: false, message: "Invalid credentials" });
@@ -76,7 +76,7 @@ exports.readerLogin = async (req, res) => {
     //Else if the email is valid, let's check for the password
     const validPassword = await bcrypt.compare(
       req.body.password,
-      reader.password
+      user.password
     );
     //console.log(validPassword)
     if (!validPassword)
@@ -87,11 +87,11 @@ exports.readerLogin = async (req, res) => {
     //Username & password are valid..
     //Create & Assign Token
 
-    const token = jwt.sign({ reader: reader }, process.env.JWT_SECRET);
+    const token = jwt.sign({ user: user}, process.env.JWT_SECRET);
     res
       .header("auth-token", token)
       .status(200)
-      .send({ success: true, token: token, data: reader });
+      .send({ success: true, token: token, data: user });
   } catch (err) {
     res.status(400).send(err.message);
   }

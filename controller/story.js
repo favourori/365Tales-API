@@ -27,3 +27,8 @@ exports.createStory = async (req, res) => {
     res.status(400).send({ success: false, message: e.message });
   }
 };
+
+
+
+//get single  story 
+// :id

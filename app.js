@@ -50,16 +50,16 @@ app.get("/", (req, res) => {
 });
 
 //import routes
-const readerRoute = require("./routes/reader");
+const userRoute = require("./routes/user");
 const storyRoute = require("./routes/story");
 
 //using routes
 
-app.use("/api/reader", readerRoute);
+app.use("/api/user", userRoute);
 app.use("/api/story", storyRoute)
 
 //server
-let PORT = process.env.PORT || 3000;
+let PORT = process.env.PORT || 6000;
 console.log(PORT);
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
